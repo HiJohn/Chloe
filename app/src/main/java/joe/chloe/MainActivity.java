@@ -2,13 +2,11 @@ package joe.chloe;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.os.CountDownTimer;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -17,19 +15,21 @@ import android.widget.VideoView;
 
 import com.blankj.utilcode.util.LogUtils;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.TimeUnit;
 
-import io.reactivex.Notification;
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import joe.chloe.model.VideoInfo;
+import joe.chloe.util.ExtractVideoInfoUtil;
+import joe.chloe.util.TaskExecutor;
+import joe.chloe.util.TrimVideoUtil;
+import joe.chloe.util.UriUtil;
 
 public class MainActivity extends AppCompatActivity {
 

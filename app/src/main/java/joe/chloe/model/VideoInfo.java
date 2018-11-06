@@ -1,4 +1,4 @@
-package joe.chloe;
+package joe.chloe.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

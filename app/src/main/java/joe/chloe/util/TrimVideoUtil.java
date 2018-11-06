@@ -1,4 +1,4 @@
-package joe.chloe;
+package joe.chloe.util;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -7,17 +7,12 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.text.TextUtils;
 
-import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.SizeUtils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 
 /**

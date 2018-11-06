@@ -1,4 +1,4 @@
-package joe.chloe;
+package joe.chloe.util;
 
 import android.os.AsyncTask;
 

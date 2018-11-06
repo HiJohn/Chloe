@@ -1,4 +1,4 @@
-package joe.chloe;
+package joe.chloe.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -16,6 +16,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import joe.chloe.model.VideoInfo;
 
 public class ExtractVideoInfoUtil {
 

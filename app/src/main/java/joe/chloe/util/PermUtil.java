@@ -1,4 +1,4 @@
-package joe.chloe;
+package joe.chloe.util;
 
 import android.Manifest;
 import android.app.Activity;
