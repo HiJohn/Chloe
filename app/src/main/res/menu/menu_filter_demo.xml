@@ -1,0 +1,39 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ImageDemoActivity">
+    <item
+        android:id="@+id/border"
+        android:title="Border"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/fit_screen"
+        android:title="FitScreen"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter1"
+        android:title="filter1"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter2"
+        android:title="filter2"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter3"
+        android:title="filter3"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/filter4"
+        android:title="filter4"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/addFilter"
+        android:title="addFilter"
+        app:showAsAction="never" />
+</menu>
