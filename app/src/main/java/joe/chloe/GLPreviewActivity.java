@@ -39,7 +39,7 @@ public class GLPreviewActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (glRenderer!=null){
+        if (glRenderer != null) {
             glRenderer.getMediaPlayer().release();
         }
     }
@@ -47,7 +47,7 @@ public class GLPreviewActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (glRenderer!=null){
+        if (glRenderer != null) {
             glSurfaceView.onResume();
         }
     }
@@ -55,7 +55,7 @@ public class GLPreviewActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (glRenderer!=null){
+        if (glRenderer != null) {
             glSurfaceView.onPause();
             glRenderer.getMediaPlayer().pause();
         }

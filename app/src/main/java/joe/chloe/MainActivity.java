@@ -34,10 +34,6 @@ import joe.chloe.util.UriUtil;
 public class MainActivity extends AppCompatActivity {
 
 
-    private int thumbIds[] = {R.id.thumb1, R.id.thumb2, R.id.thumb3, R.id.thumb4,
-            R.id.thumb5, R.id.thumb6, R.id.thumb7, R.id.thumb8};
-
-
     private static final String TAG = "MainActivity";
     private static final int CHOOSE_VIDEO = 0x001;
     private static final int CHOOSE_AUDIO = 0x002;
@@ -61,27 +57,14 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public boolean handleMessage(Message msg) {
 
-
             switch (msg.what) {
                 case MSG_PLAY:
-
-                    if (videoView != null && videoInfo != null) {
-                        seekBar.setMax(videoInfo.duration);
-                        seekBar.setProgress(0);
-                        videoView.setVideoPath(videoPath);
-                        videoView.seekTo(0);
-//                        playRepeat();
-                        loadThumb(videoInfo.duration);
-//                        videoView.start();
-                    }
 
 
                     break;
 
                 case MSG_SHOW_IMG:
-                    bitmapCount ++;
-                    thumb = findViewById(thumbIds[bitmapCount-1]);
-                    thumb.setImageBitmap(bitmapss.pop());
+
                     break;
             }
 
@@ -102,77 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
 
         videoView = findViewById(R.id.videoView);
-        seekBar = findViewById(R.id.sv_seek_bar);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (videoInfo != null) {
-                    videoView.seekTo(progress);
-
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-                if (disposable!=null&&!disposable.isDisposed()){
-                    disposable.dispose();
-                }
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-                seekedPosition = seekBar.getProgress();
-                if (videoInfo!=null){
-
-//                    playRepeat();
-                }
-            }
-        });
-//        mController = new MediaController(this);
-//        videoView.setMediaController(mController);
-//        mController.setMediaPlayer(videoView);
-
-
-    }
-
-    Disposable disposable;
-
-    private void playRepeat() {
-        disposable = Observable.interval(500, TimeUnit.MILLISECONDS)
-                .subscribeOn(Schedulers.newThread())
-                .repeat()
-                .doOnComplete(new Action() {
-                    @Override
-                    public void run() throws Exception {
-                        LogUtils.i(TAG,"   interval doOnComplete");
-//                        videoView.pause();
-                    }
-                })
-                .doAfterNext(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        LogUtils.i(TAG,"   interval doAfterNext");
-                        videoView.pause();
-                    }
-                })
-                .doOnNext(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        LogUtils.i(TAG,"   interval doOnNext");
-//                        videoView.seekTo(seekedPosition);
-//                        videoView.start();
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(Long aLong) throws Exception {
-                        LogUtils.i(TAG,"   interval subscribe");
-                        videoView.seekTo(seekedPosition);
-                        videoView.start();
-                    }
-                });
-
 
     }
 
@@ -193,31 +105,6 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, CHOOSE_VIDEO);
     }
 
-    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
-    private LinkedList<Bitmap> bitmapss = new LinkedList<>();
-
-    private void loadThumb(long duration) {
-
-        TrimVideoUtil.backgroundShootVideoThumb(videoPath, 8, 0, duration, new TrimVideoUtil.TaskCallback<Bitmap, Long>() {
-            @Override
-            public void onResult(final Bitmap bitmap, Long aLong) {
-
-                if (bitmap != null) {
-                    bitmapss.push(bitmap);
-                }
-                mHandler.sendEmptyMessage(MSG_SHOW_IMG);
-
-
-
-            }
-
-            @Override
-            public void onError(Throwable e) {
-                LogUtils.i(TAG," backgroundShootVideoThumb  onError  ");
-            }
-        });
-
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -228,15 +115,7 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case CHOOSE_VIDEO:
                 videoPath = UriUtil.getPath(this, data.getData());
-
-                TaskExecutor.executeParallel(new Runnable() {
-                    @Override
-                    public void run() {
-                        videoInfo = ExtractVideoInfoUtil.getVideoInfoFromPath(videoPath);
-                        mHandler.sendEmptyMessage(MSG_PLAY);
-                    }
-                });
-
+//              videoInfo = ExtractVideoInfoUtil.getVideoInfoFromPath(videoPath);
 
                 break;
             case CHOOSE_AUDIO:
@@ -244,5 +123,13 @@ public class MainActivity extends AppCompatActivity {
 
                 break;
         }
+    }
+
+    public void toGlPreview(View view) {
+
+        Intent intent = new Intent(this,GLPreviewActivity.class);
+        intent.putExtra("path",videoPath);
+        startActivity(intent);
+
     }
 }

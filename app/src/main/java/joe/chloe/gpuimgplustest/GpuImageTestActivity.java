@@ -20,6 +20,7 @@ import org.wysaid.nativePort.CGENativeLibrary;
 import java.io.IOException;
 import java.io.InputStream;
 
+import joe.chloe.MainActivity;
 import joe.chloe.R;
 
 
@@ -270,12 +271,14 @@ public class GpuImageTestActivity extends AppCompatActivity {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.agl_preview) {
+            startActivity(new Intent(this, MainActivity.class));
+            return true;
+        }
+        if (id == R.id.filter_test) {
             startActivity(new Intent(this, FilterTestActivity.class));
             return true;
         }
-
 
         return super.onOptionsItemSelected(item);
     }

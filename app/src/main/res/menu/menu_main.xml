@@ -3,4 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
+    <item android:id="@+id/agl_preview" android:title="glpreview"
+         app:showAsAction="ifRoom"
+        />
+    <item android:id="@+id/filter_test" android:title="addFilter"
+        app:showAsAction="never"
+        />
 </menu>

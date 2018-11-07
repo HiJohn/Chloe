@@ -20,6 +20,7 @@ import java.nio.FloatBuffer;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
+import joe.chloe.R;
 import joe.chloe.util.ShaderUtils;
 
 
@@ -54,20 +55,20 @@ public class GLRenderer implements GLSurfaceView.Renderer
     private int programId;
     private FloatBuffer vertexBuffer;
     private final float[] vertexData = {
-            1f,-1f,0f,
-            -1f,-1f,0f,
-            1f,1f,0f,
-            -1f,1f,0f
+            1f, -1f, 0f,
+            -1f, -1f, 0f,
+            1f, 1f, 0f,
+            -1f, 1f, 0f
     };
 
-    private final float[] projectionMatrix=new float[16];
+    private final float[] projectionMatrix = new float[16];
     private int uMatrixHandle;
 
     private final float[] textureVertexData = {
-            1f,0f,
-            0f,0f,
-            1f,1f,
-            0f,1f
+            1f, 0f,
+            0f, 0f,
+            1f, 1f,
+            0f, 1f
     };
     private FloatBuffer textureVertexBuffer;
     private int uTextureSamplerHandle;
@@ -81,11 +82,12 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     private boolean updateSurface;
     private boolean playerPrepared;
-    private int screenWidth,screenHeight;
-    public GLRenderer(Context context,String videoPath) {
+    private int screenWidth, screenHeight;
+
+    public GLRenderer(Context context, String videoPath) {
         this.context = context;
-        playerPrepared=false;
-        synchronized(this) {
+        playerPrepared = false;
+        synchronized (this) {
             updateSurface = false;
         }
         vertexBuffer = ByteBuffer.allocateDirect(vertexData.length * 4)
@@ -100,10 +102,10 @@ public class GLRenderer implements GLSurfaceView.Renderer
                 .put(textureVertexData);
         textureVertexBuffer.position(0);
 
-        mediaPlayer=new MediaPlayer();
-        try{
+        mediaPlayer = new MediaPlayer();
+        try {
             mediaPlayer.setDataSource(context, Uri.parse(videoPath));
-        }catch (IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
         }
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
@@ -114,16 +116,16 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     @Override
     public void onSurfaceCreated(GL10 gl, EGLConfig config) {
-//        String vertexShader = ShaderUtils.readRawTextFile(context, R.raw.vertex_shader);
-//        String fragmentShader= ShaderUtils.readRawTextFile(context, R.raw.fragment_shader);
-//        programId=ShaderUtils.createProgram(vertexShader,fragmentShader);
-        programId=ShaderUtils.createProgram(NO_FILTER_VERTEX_SHADER,NO_FILTER_FRAGMENT_SHADER);
-        aPositionHandle= GLES20.glGetAttribLocation(programId,"aPosition");
+        String vertexShader = ShaderUtils.readRawTextFile(context, R.raw.default_vertex);
+        String fragmentShader = ShaderUtils.readRawTextFile(context, R.raw.default_fragment);
+        programId = ShaderUtils.createProgram(vertexShader, fragmentShader);
+//        programId=ShaderUtils.createProgram(NO_FILTER_VERTEX_SHADER,NO_FILTER_FRAGMENT_SHADER);
+        aPositionHandle = GLES20.glGetAttribLocation(programId, "aPosition");
 
-        uMatrixHandle=GLES20.glGetUniformLocation(programId,"uMatrix");
+        uMatrixHandle = GLES20.glGetUniformLocation(programId, "uMatrix");
         uSTMMatrixHandle = GLES20.glGetUniformLocation(programId, "uSTMatrix");
-        uTextureSamplerHandle=GLES20.glGetUniformLocation(programId,"sTexture");
-        aTextureCoordHandle=GLES20.glGetAttribLocation(programId,"aTexCoord");
+        uTextureSamplerHandle = GLES20.glGetUniformLocation(programId, "sTexture");
+        aTextureCoordHandle = GLES20.glGetAttribLocation(programId, "aTexCoord");
 
 
         int[] textures = new int[1];
@@ -145,36 +147,37 @@ public class GLRenderer implements GLSurfaceView.Renderer
         mediaPlayer.setSurface(surface);
         surface.release();
 
-        if (!playerPrepared){
+        if (!playerPrepared) {
             try {
                 mediaPlayer.prepare();
-                playerPrepared=true;
+                playerPrepared = true;
             } catch (IOException t) {
                 Log.e(TAG, "media player prepare failed");
             }
             mediaPlayer.start();
-            playerPrepared=true;
+            playerPrepared = true;
         }
     }
 
     @Override
     public void onSurfaceChanged(GL10 gl, int width, int height) {
-        Log.d(TAG, "onSurfaceChanged: "+width+" "+height);
-        screenWidth=width; screenHeight=height;
+        Log.d(TAG, "onSurfaceChanged: " + width + " " + height);
+        screenWidth = width;
+        screenHeight = height;
     }
 
     @Override
     public void onDrawFrame(GL10 gl) {
-        GLES20.glClear( GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
-        synchronized (this){
-            if (updateSurface){
+        GLES20.glClear(GLES20.GL_DEPTH_BUFFER_BIT | GLES20.GL_COLOR_BUFFER_BIT);
+        synchronized (this) {
+            if (updateSurface) {
                 surfaceTexture.updateTexImage();
                 surfaceTexture.getTransformMatrix(mSTMatrix);
                 updateSurface = false;
             }
         }
         GLES20.glUseProgram(programId);
-        GLES20.glUniformMatrix4fv(uMatrixHandle,1,false,projectionMatrix,0);
+        GLES20.glUniformMatrix4fv(uMatrixHandle, 1, false, projectionMatrix, 0);
         GLES20.glUniformMatrix4fv(uSTMMatrixHandle, 1, false, mSTMatrix, 0);
 
         vertexBuffer.position(0);
@@ -184,13 +187,13 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
         textureVertexBuffer.position(0);
         GLES20.glEnableVertexAttribArray(aTextureCoordHandle);
-        GLES20.glVertexAttribPointer(aTextureCoordHandle,2,GLES20.GL_FLOAT,false,8,textureVertexBuffer);
+        GLES20.glVertexAttribPointer(aTextureCoordHandle, 2, GLES20.GL_FLOAT, false, 8, textureVertexBuffer);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES,textureId);
+        GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textureId);
 
-        GLES20.glUniform1i(uTextureSamplerHandle,0);
-        GLES20.glViewport(0,0,screenWidth,screenHeight);
+        GLES20.glUniform1i(uTextureSamplerHandle, 0);
+        GLES20.glViewport(0, 0, screenWidth, screenHeight);
         GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, 0, 4);
     }
 
@@ -201,16 +204,18 @@ public class GLRenderer implements GLSurfaceView.Renderer
 
     @Override
     public void onVideoSizeChanged(MediaPlayer mp, int width, int height) {
-        Log.d(TAG, "onVideoSizeChanged: "+width+" "+height);
-        updateProjection(width,height);
+        Log.d(TAG, "onVideoSizeChanged: " + width + " " + height);
+        updateProjection(width, height);
     }
 
-    private void updateProjection(int videoWidth, int videoHeight){
-        float screenRatio=(float)screenWidth/screenHeight;
-        float videoRatio=(float)videoWidth/videoHeight;
-        if (videoRatio>screenRatio){
-            Matrix.orthoM(projectionMatrix,0,-1f,1f,-videoRatio/screenRatio,videoRatio/screenRatio,-1f,1f);
-        }else Matrix.orthoM(projectionMatrix,0,-screenRatio/videoRatio,screenRatio/videoRatio,-1f,1f,-1f,1f);
+    private void updateProjection(int videoWidth, int videoHeight) {
+        float screenRatio = (float) screenWidth / screenHeight;
+        float videoRatio = (float) videoWidth / videoHeight;
+        if (videoRatio > screenRatio) {
+            Matrix.orthoM(projectionMatrix, 0, -1f, 1f, -videoRatio / screenRatio, videoRatio / screenRatio, -1f, 1f);
+        } else{
+            Matrix.orthoM(projectionMatrix, 0, -screenRatio / videoRatio, screenRatio / videoRatio, -1f, 1f, -1f, 1f);
+        }
     }
 
     public MediaPlayer getMediaPlayer() {
