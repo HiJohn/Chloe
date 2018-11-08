@@ -1,5 +1,6 @@
 package joe.chloe;
 
+import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
@@ -28,8 +29,11 @@ public class GLPreviewActivity extends AppCompatActivity {
             glSurfaceView = (GLSurfaceView) findViewById(R.id.gl_preview_view);
             glSurfaceView.setEGLContextClientVersion(2);
             glRenderer = new GLRenderer(this, videoPath);
+            glSurfaceView.setEGLConfigChooser(8, 8, 8, 8, 8, 0);
+            glSurfaceView.getHolder().setFormat(PixelFormat.RGBA_8888);
             glSurfaceView.setRenderer(glRenderer);
             glSurfaceView.setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
+            glSurfaceView.setZOrderOnTop(true);
         } else {
             ToastUtils.showLong("视频文件地址不对");
         }

@@ -51,6 +51,7 @@ dependencies {
 //    implementation 'org.wysaid:gpuimage-plus:2.5.1'
 
 
-    implementation 'com.github.MasayukiSuda:Mp4Composer-android:v0.1.8'
+//    implementation 'com.github.MasayukiSuda:Mp4Composer-android:v0.1.8'
     implementation project(':library')
+    implementation project(':mp4compose')
 }

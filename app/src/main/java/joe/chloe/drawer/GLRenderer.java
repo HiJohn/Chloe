@@ -190,6 +190,7 @@ public class GLRenderer implements GLSurfaceView.Renderer
         GLES20.glVertexAttribPointer(aTextureCoordHandle, 2, GLES20.GL_FLOAT, false, 8, textureVertexBuffer);
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
+        Log.i(TAG," texture id :"+textureId);
         GLES20.glBindTexture(GLES11Ext.GL_TEXTURE_EXTERNAL_OES, textureId);
 
         GLES20.glUniform1i(uTextureSamplerHandle, 0);

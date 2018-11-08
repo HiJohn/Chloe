@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.daasuu.mp4compose.FillMode;
 import com.daasuu.mp4compose.composer.Mp4Composer;
 import com.daasuu.mp4compose.filter.GlLutFilter;
@@ -30,6 +31,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+import joe.chloe.composerfilters.GlCoolFilter;
 import joe.chloe.video.VideoItem;
 import joe.chloe.video.VideoListAdapter;
 import joe.chloe.video.VideoLoadListener;
@@ -120,7 +122,7 @@ public class MvComposerActivity extends AppCompatActivity {
                 // .rotation(Rotation.ROTATION_270)
                 //.size(720, 1280)
                 .fillMode(FillMode.PRESERVE_ASPECT_FIT)
-                .filter(new GlLutFilter(bitmap))
+                .filter(new GlCoolFilter())
                 .mute(muteCheckBox.isChecked())
                 .flipHorizontal(flipHorizontalCheckBox.isChecked())
                 .flipVertical(flipVerticalCheckBox.isChecked())
@@ -149,7 +151,9 @@ public class MvComposerActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailed(Exception exception) {
-                        LogUtils.d(TAG, "onFailed()");
+                        exception.printStackTrace();
+                        LogUtils.d(TAG, "onFailed()"+exception.getMessage());
+                        ToastUtils.showLong("合成滤镜失败");
                     }
                 })
                 .start();
