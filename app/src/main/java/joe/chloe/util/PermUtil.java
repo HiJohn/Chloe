@@ -29,6 +29,7 @@ public class PermUtil {
     public static final int DENIED = PackageManager.PERMISSION_DENIED;
 
     public static final int SD_REQ = 9111;
+    public static final int RECORD_REQ = 9112;
     private static final String TAG = "PermUtil";
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -59,8 +60,8 @@ public class PermUtil {
         return isDenied(context, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
-    public static void requestRecordPermissions(Activity activity,int reqCode){
-        requestPermissions(activity,reqCode,RECORD_VIDEO_GROUP);
+    public static void requestRecordPermissions(Activity activity){
+        requestPermissions(activity,RECORD_REQ,RECORD_VIDEO_GROUP);
     }
 
     public static boolean hasRecordPermissions(Activity activity){
@@ -71,6 +72,9 @@ public class PermUtil {
 
     public static void requestSDPermissions(Activity activity, int reqCode) {
         ActivityCompat.requestPermissions(activity, new String[]{SD_READ_PERM, SD_WRITE_PERM}, reqCode);
+    }
+    public static void requestSDPermissions(Activity activity) {
+        ActivityCompat.requestPermissions(activity, new String[]{SD_READ_PERM, SD_WRITE_PERM}, SD_REQ);
     }
 
     public static boolean isScreenOrientPhoneLocked(Context context) {

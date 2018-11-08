@@ -1,11 +1,14 @@
 package joe.chloe.gpuimgplustest;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
 import android.util.Log;
@@ -23,6 +26,7 @@ import java.io.InputStream;
 import joe.chloe.MainActivity;
 import joe.chloe.MvComposerActivity;
 import joe.chloe.R;
+import joe.chloe.util.PermUtil;
 
 
 public class GpuImageTestActivity extends AppCompatActivity {
@@ -257,6 +261,48 @@ public class GpuImageTestActivity extends AppCompatActivity {
 //        super.onPause();
 //        System.exit(0);
 //    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (!PermUtil.hasRecordPermissions(this)){
+            PermUtil.requestRecordPermissions(this);
+        }
+
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (!PermUtil.hasRecordPermissions(this)){
+            confirmAbort();
+        }
+    }
+
+    private void confirmAbort() {
+        AlertDialog.Builder mDialog = new AlertDialog.Builder(this);
+        mDialog.setMessage("是否再次申请权限");
+        mDialog.setCancelable(false);
+        mDialog.setPositiveButton("放弃", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        mDialog.setNegativeButton("继续", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (!PermUtil.hasRecordPermissions(GpuImageTestActivity.this)){
+                    PermUtil.requestRecordPermissions(GpuImageTestActivity.this);
+                }
+                dialog.dismiss();
+            }
+        });
+        mDialog.show();
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

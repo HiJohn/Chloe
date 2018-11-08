@@ -179,7 +179,7 @@ public class FilterTestActivity extends AppCompatActivity {
                 Log.i(LOG_TAG, "Done! The file is generated at: " + outputFilename);
                 long end = System.currentTimeMillis();
                 final long time = end - start;
-                Log.i(LOG_TAG, "Done! time spend : " + time);
+                Log.i(LOG_TAG, "Done! time spend : " + time/1000f);
                 UiThreadExecutor.runTask("", new Runnable() {
                     @Override
                     public void run() {
