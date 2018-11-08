@@ -3,10 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".MainActivity">
 
-    <item android:id="@+id/agl_preview" android:title="glpreview"
-         app:showAsAction="ifRoom"
-        />
-    <item android:id="@+id/filter_test" android:title="addFilter"
-        app:showAsAction="never"
-        />
+    <item
+        android:id="@+id/agl_preview"
+        android:title="glpreview"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/filter_test"
+        android:title="addFilter"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/mv_composer"
+        android:title="mv_composer"
+        app:showAsAction="never" />
 </menu>

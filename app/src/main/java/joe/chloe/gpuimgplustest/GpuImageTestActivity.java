@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import joe.chloe.MainActivity;
+import joe.chloe.MvComposerActivity;
 import joe.chloe.R;
 
 
@@ -277,6 +278,11 @@ public class GpuImageTestActivity extends AppCompatActivity {
         }
         if (id == R.id.filter_test) {
             startActivity(new Intent(this, FilterTestActivity.class));
+            return true;
+        }
+
+        if (id==R.id.mv_composer){
+            startActivity(new Intent(this, MvComposerActivity.class));
             return true;
         }
 
