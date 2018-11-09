@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -46,7 +48,7 @@ import joe.chloe.util.FilterTypeConvertor;
 import joe.chloe.util.UriUtil;
 
 
-public class ExoPlayerFilterActivity extends AppCompatActivity {
+public class ExoPlayerFilterActivity extends AppCompatActivity implements VideoFilterAdapter.FilterClickListener {
 
     private static final String TAG = "ExoPlayerFilterActivity";
 
@@ -56,7 +58,9 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
     private Button merge;
     private SeekBar seekBar;
     private PlayerTimer playerTimer;
-
+    private RecyclerView filtersRv;
+    private LinearLayoutManager filterLlm;
+    private VideoFilterAdapter filterAdapter;
     private String mVideoPath = "";
     private Uri mVideoUri ;
 
@@ -103,6 +107,14 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
 
     private void setUpViews() {
 
+        filtersRv = findViewById(R.id.filters_rv);
+        filterLlm = new LinearLayoutManager(this,RecyclerView.HORIZONTAL,false);
+        filterAdapter = new VideoFilterAdapter();
+        filterAdapter.setFilterNames(FilterType.createFilterList());
+        filterAdapter.setFilterSelectListener(this);
+        filtersRv.setAdapter(filterAdapter);
+        filtersRv.setLayoutManager(filterLlm);
+        //merge progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMax(100);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
@@ -160,17 +172,17 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
         });
 
         // list
-        ListView listView = (ListView) findViewById(R.id.list);
-        final List<FilterType> filterTypes = FilterType.createFilterList();
-        listView.setAdapter(new FilterAdapter(this, R.layout.row_text, filterTypes));
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                currentFilterType = filterTypes.get(position);
-
-                ePlayerView.setGlFilter(FilterType.createGlFilter(currentFilterType, getApplicationContext()));
-            }
-        });
+//        ListView listView = (ListView) findViewById(R.id.list);
+//        final List<FilterType> filterTypes = FilterType.createFilterList();
+//        listView.setAdapter(new FilterAdapter(this, R.layout.row_text, filterTypes));
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                currentFilterType = filterTypes.get(position);
+//
+//                ePlayerView.setGlFilter(FilterType.createGlFilter(currentFilterType, getApplicationContext()));
+//            }
+//        });
     }
 
 
@@ -286,5 +298,11 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setDataAndType(Uri.parse(outPath), "video/mp4");
         startActivity(intent);
+    }
+
+    @Override
+    public void onFilterClicked(int position, FilterType filterType) {
+        currentFilterType = filterType;
+        ePlayerView.setGlFilter(FilterType.createGlFilter(currentFilterType, getApplicationContext()));
     }
 }

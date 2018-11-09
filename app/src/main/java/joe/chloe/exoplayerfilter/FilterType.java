@@ -56,8 +56,8 @@ public enum FilterType {
     BITMAP_OVERLAY_SAMPLE;
 
 
-    public static List<FilterType> createFilterList() {
-        List<FilterType> filters = new ArrayList<>();
+    public static ArrayList<FilterType> createFilterList() {
+        ArrayList<FilterType> filters = new ArrayList<>();
 
         filters.add(DEFAULT);
         filters.add(SEPIA);

@@ -18,14 +18,34 @@ import java.util.HashMap;
 
 public class GlFilter {
 
+//    protected static final String DEFAULT_VERTEX_SHADER =
+//            "attribute vec4 aPosition;\n" +
+//                    "attribute vec4 aTextureCoord;\n" +
+//                    "varying highp vec2 vTextureCoord;\n" +
+//                    "void main() {\n" +
+//                    "gl_Position = aPosition;\n" +
+//                    "vTextureCoord = aTextureCoord.xy;\n" +
+//                    "}\n";
+
     protected static final String DEFAULT_VERTEX_SHADER =
-            "attribute vec4 aPosition;\n" +
+            "uniform mat4 uMVPMatrix;\n" +
+                    "uniform mat4 uSTMatrix;\n" +
+                    "attribute vec4 aPosition;\n" +
                     "attribute vec4 aTextureCoord;\n" +
-                    "varying highp vec2 vTextureCoord;\n" +
+                    "varying vec2 vTextureCoord;\n" +
                     "void main() {\n" +
-                    "gl_Position = aPosition;\n" +
-                    "vTextureCoord = aTextureCoord.xy;\n" +
+                    "  gl_Position = uMVPMatrix * aPosition;\n" +
+                    "  vTextureCoord = (uSTMatrix * aTextureCoord).xy;\n" +
                     "}\n";
+    protected static final String DEFAULT_FRAGMENT_SHADER =
+            "#extension GL_OES_EGL_image_external : require\n" +
+                    "precision mediump float;\n" +      // highp here doesn't seem to matter
+                    "varying vec2 vTextureCoord;\n" +
+                    "uniform samplerExternalOES sTexture;\n" +
+                    "void main() {\n" +
+                    "  gl_FragColor = texture2D(sTexture, vTextureCoord);\n" +
+                    "}\n";
+
 
     private static final int FLOAT_SIZE_BYTES = 4;
     private static final int TRIANGLE_VERTICES_DATA_STRIDE_BYTES = 5 * FLOAT_SIZE_BYTES;
@@ -52,7 +72,7 @@ public class GlFilter {
 
 
     public GlFilter() {
-        this(GlUtils.DEFAULT_VERTEX_SHADER, GlUtils.DEFAULT_FRAGMENT_SHADER);
+        this(DEFAULT_VERTEX_SHADER, DEFAULT_FRAGMENT_SHADER);
     }
 
     public GlFilter(final Resources res, final int vertexShaderSourceResId, final int fragmentShaderSourceResId) {
