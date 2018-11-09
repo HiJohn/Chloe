@@ -1,5 +1,6 @@
 package joe.chloe.exoplayerfilter;
 
+import android.app.ProgressDialog;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,16 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 
+import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.PathUtils;
+import com.blankj.utilcode.util.ToastUtils;
 import com.daasuu.epf.EPlayerView;
+import com.daasuu.mp4compose.FillMode;
+import com.daasuu.mp4compose.composer.Mp4Composer;
+import com.daasuu.mp4compose.filter.GlFilter;
+import com.daasuu.mp4compose.filter.GlSepiaFilter;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
@@ -30,20 +39,32 @@ import com.google.android.exoplayer2.util.Util;
 
 import java.util.List;
 
+import joe.chloe.MvComposerActivity;
 import joe.chloe.R;
+import joe.chloe.util.FilterTypeConvertor;
+import joe.chloe.util.UriUtil;
 
 
 public class ExoPlayerFilterActivity extends AppCompatActivity {
 
+    private static final String TAG = "ExoPlayerFilterActivity";
+
     private EPlayerView ePlayerView;
     private SimpleExoPlayer player;
     private Button button;
+    private Button merge;
     private SeekBar seekBar;
     private PlayerTimer playerTimer;
 
     private String mVideoPath = "";
     private Uri mVideoUri ;
 
+    private ProgressDialog progressDialog;
+
+    private Mp4Composer mp4Composer;
+    private String outPath = "";
+
+    private FilterType currentFilterType = FilterType.DEFAULT ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +73,12 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
         setUpViews();
 
         mVideoUri = getIntent().getData();
+        if (mVideoUri!=null){
+            mVideoPath = UriUtil.getPath(this,mVideoUri);
+        }else {
+            finish();
+        }
+        outPath = PathUtils.getExternalMoviesPath().concat("/").concat("testFilter.mp4");
 
     }
 
@@ -74,6 +101,11 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
     }
 
     private void setUpViews() {
+
+        progressDialog = new ProgressDialog(this);
+        progressDialog.setMax(100);
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+
         // play pause
         button = (Button) findViewById(R.id.btn);
         button.setOnClickListener(new View.OnClickListener() {
@@ -88,6 +120,14 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
                     player.setPlayWhenReady(true);
                     button.setText(R.string.pause);
                 }
+            }
+        });
+        // merge
+        merge = findViewById(R.id.merge);
+        merge.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startCodec();
             }
         });
 
@@ -125,7 +165,9 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                ePlayerView.setGlFilter(FilterType.createGlFilter(filterTypes.get(position), getApplicationContext()));
+                currentFilterType = filterTypes.get(position);
+
+                ePlayerView.setGlFilter(FilterType.createGlFilter(currentFilterType, getApplicationContext()));
             }
         });
     }
@@ -179,6 +221,52 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
             }
         });
         playerTimer.start();
+    }
+
+    private void startCodec(){
+        mp4Composer = null;
+
+        GlFilter glFilter = FilterTypeConvertor.convertToComposerFilter(this,currentFilterType);
+
+        progressDialog.show();
+
+        mp4Composer = new Mp4Composer(mVideoPath, outPath)
+                // .rotation(Rotation.ROTATION_270)
+                //.size(720, 1280)
+                .fillMode(FillMode.PRESERVE_ASPECT_FIT)
+                .filter(glFilter)
+                .listener(new Mp4Composer.Listener() {
+                    @Override
+                    public void onProgress(double progress) {
+                        LogUtils.d(TAG, "onProgress = " + progress);
+                        runOnUiThread(() -> progressDialog.setProgress((int) (progress * 100)));
+                    }
+
+                    @Override
+                    public void onCompleted() {
+                        LogUtils.d(TAG, "onCompleted()");
+                        MvComposerActivity.exportMp4ToGallery(getApplicationContext(), outPath);
+                        runOnUiThread(() -> {
+                            progressDialog.setProgress(100);
+                            progressDialog.dismiss();
+                            ToastUtils.showLong( "codec complete path =" + mVideoPath);
+                        });
+                    }
+
+                    @Override
+                    public void onCanceled() {
+                        progressDialog.dismiss();
+                    }
+
+                    @Override
+                    public void onFailed(Exception exception) {
+                        exception.printStackTrace();
+                        progressDialog.dismiss();
+                        LogUtils.d(TAG, "onFailed()"+exception.getMessage());
+                        ToastUtils.showLong("合成滤镜失败");
+                    }
+                })
+                .start();
     }
 
 
