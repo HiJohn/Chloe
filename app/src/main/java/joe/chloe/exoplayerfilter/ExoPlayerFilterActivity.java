@@ -1,6 +1,7 @@
 package joe.chloe.exoplayerfilter;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -78,7 +79,7 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
         }else {
             finish();
         }
-        outPath = PathUtils.getExternalMoviesPath().concat("/").concat("testFilter.mp4");
+        outPath = PathUtils.getExternalMoviesPath().concat("/").concat(String.valueOf(System.currentTimeMillis())).concat("_testFilter.mp4");
 
     }
 
@@ -249,7 +250,8 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
                         runOnUiThread(() -> {
                             progressDialog.setProgress(100);
                             progressDialog.dismiss();
-                            ToastUtils.showLong( "codec complete path =" + mVideoPath);
+                            ToastUtils.showLong( "codec complete path =" + outPath);
+                            viewTheResult();
                         });
                     }
 
@@ -280,4 +282,9 @@ public class ExoPlayerFilterActivity extends AppCompatActivity {
     }
 
 
+    private void viewTheResult(){
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        intent.setDataAndType(Uri.parse(outPath), "video/mp4");
+        startActivity(intent);
+    }
 }
