@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.daasuu.mp4compose.FillMode;
 import com.daasuu.mp4compose.composer.Mp4Composer;
 import com.daasuu.mp4compose.filter.GlLutFilter;
+import com.daasuu.mp4compose.filter.GlSepiaFilter;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -122,7 +123,7 @@ public class MvComposerActivity extends AppCompatActivity {
                 // .rotation(Rotation.ROTATION_270)
                 //.size(720, 1280)
                 .fillMode(FillMode.PRESERVE_ASPECT_FIT)
-                .filter(new GlCoolFilter())
+                .filter(new GlSepiaFilter())
                 .mute(muteCheckBox.isChecked())
                 .flipHorizontal(flipHorizontalCheckBox.isChecked())
                 .flipVertical(flipVerticalCheckBox.isChecked())

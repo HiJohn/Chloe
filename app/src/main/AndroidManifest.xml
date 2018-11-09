@@ -42,6 +42,7 @@
         <activity android:name=".gpuimgplustest.BasicImageDemoActivity" />
         <activity android:name=".gpuimgplustest.SimplePlayerDemoActivity" />
         <activity android:name=".MvComposerActivity"></activity>
+        <activity android:name=".exoplayerfilter.ExoPlayerFilterActivity" />
     </application>
 
 </manifest>

@@ -2,11 +2,13 @@ package joe.chloe;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatSeekBar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.MediaController;
@@ -14,6 +16,7 @@ import android.widget.SeekBar;
 import android.widget.VideoView;
 
 import com.blankj.utilcode.util.LogUtils;
+import com.blankj.utilcode.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -25,6 +28,8 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import joe.chloe.drawer.TextureRenderer;
+import joe.chloe.exoplayerfilter.ExoPlayerFilterActivity;
 import joe.chloe.model.VideoInfo;
 import joe.chloe.util.ExtractVideoInfoUtil;
 import joe.chloe.util.TaskExecutor;
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String audioPath = "";
     private String videoPath = "";
+    private Uri mVideoUri = null;
     private VideoInfo videoInfo = null;
 
     private int seekedPosition = 0;
@@ -83,7 +89,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         videoView = findViewById(R.id.videoView);
 
     }
@@ -114,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
         }
         switch (requestCode) {
             case CHOOSE_VIDEO:
-                videoPath = UriUtil.getPath(this, data.getData());
+                mVideoUri = data.getData();
+                videoPath = UriUtil.getPath(this, mVideoUri);
 //              videoInfo = ExtractVideoInfoUtil.getVideoInfoFromPath(videoPath);
 
                 break;
@@ -127,9 +133,25 @@ public class MainActivity extends AppCompatActivity {
 
     public void toGlPreview(View view) {
 
+        if (TextUtils.isEmpty(videoPath)){
+            ToastUtils.showLong("没有选择视频文件");
+            return;
+        }
+
         Intent intent = new Intent(this,GLPreviewActivity.class);
         intent.putExtra("path",videoPath);
         startActivity(intent);
 
+    }
+
+    public void toExoPreview(View view) {
+        if (mVideoUri==null){
+            ToastUtils.showLong("没有选择视频文件");
+            return;
+        }
+        Intent intent = new Intent(this,ExoPlayerFilterActivity.class);
+        intent.setData(mVideoUri);
+//        intent.putExtra("uri",mVideoUri);
+        startActivity(intent);
     }
 }

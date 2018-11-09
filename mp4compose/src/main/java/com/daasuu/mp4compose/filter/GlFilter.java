@@ -18,6 +18,15 @@ import java.util.HashMap;
 
 public class GlFilter {
 
+    protected static final String DEFAULT_VERTEX_SHADER =
+            "attribute vec4 aPosition;\n" +
+                    "attribute vec4 aTextureCoord;\n" +
+                    "varying highp vec2 vTextureCoord;\n" +
+                    "void main() {\n" +
+                    "gl_Position = aPosition;\n" +
+                    "vTextureCoord = aTextureCoord.xy;\n" +
+                    "}\n";
+
     private static final int FLOAT_SIZE_BYTES = 4;
     private static final int TRIANGLE_VERTICES_DATA_STRIDE_BYTES = 5 * FLOAT_SIZE_BYTES;
     private static final int TRIANGLE_VERTICES_DATA_POS_OFFSET = 0;

@@ -1,25 +1,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:context=".SimplePlayerDemoActivity">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".gpuimgplustest.SimplePlayerDemoActivity">
 
     <FrameLayout
         android:id="@+id/glviewFrameLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
         <org.wysaid.view.SimplePlayerGLSurfaceView
             android:id="@+id/videoGLSurfaceView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
     </FrameLayout>
 
     <SeekBar
         android:id="@+id/seekBar"
         android:layout_width="match_parent"
-        android:layout_height="60dp"/>
+        android:layout_height="60dp" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"
@@ -37,25 +36,25 @@
                 android:layout_width="100dp"
                 android:layout_height="50dp"
                 android:layout_alignParentTop="true"
-                android:text="Gallery"/>
+                android:text="Gallery" />
 
             <Button
                 android:id="@+id/takeShotBtn"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="TakeShot"/>
+                android:text="TakeShot" />
 
             <Button
                 android:id="@+id/switchShapeBtn"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="Border"/>
+                android:text="Border" />
 
             <Button
                 android:id="@+id/fitViewBtn"
                 android:layout_width="100dp"
                 android:layout_height="match_parent"
-                android:text="FitScreen"/>
+                android:text="FitScreen" />
 
         </LinearLayout>
     </HorizontalScrollView>
