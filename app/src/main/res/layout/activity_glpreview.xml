@@ -7,9 +7,20 @@
     tools:context=".GLPreviewActivity">
 
 
-    <android.opengl.GLSurfaceView
+    <joe.chloe.drawer.GlVideoView
         android:id="@+id/gl_preview_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/pre_filters_rv"
+        android:background="@color/half_transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </android.support.v7.widget.RecyclerView>
 
 </android.support.constraint.ConstraintLayout>

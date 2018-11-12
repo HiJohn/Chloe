@@ -33,6 +33,7 @@ import java.util.Date;
 import java.util.List;
 
 import joe.chloe.composerfilters.GlCoolFilter;
+import joe.chloe.composerfilters.GlSketchFilter;
 import joe.chloe.video.VideoItem;
 import joe.chloe.video.VideoListAdapter;
 import joe.chloe.video.VideoLoadListener;

@@ -13,7 +13,7 @@ public class GlCoolFilter extends GlFilter {
     private int mToneCurveTextureUniformLocation;
 
     private static final String FRAGMENT_SHADER =
-            "#extension GL_OES_EGL_image_external : require\n" +
+            "#extension GL_OES_EGL_image_external : require" +
             
             "varying highp vec2 vTextureCoord;" +
             "precision highp float;" +

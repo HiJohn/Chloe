@@ -117,6 +117,7 @@ public class ExoPlayerFilterActivity extends AppCompatActivity implements VideoF
         //merge progress dialog
         progressDialog = new ProgressDialog(this);
         progressDialog.setMax(100);
+        progressDialog.setCancelable(false);
         progressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 
         // play pause

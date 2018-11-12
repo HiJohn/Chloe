@@ -81,6 +81,7 @@ public enum FilterType {
         return filters;
     }
 
+
     public static GlFilter createGlFilter(FilterType filterType, Context context) {
         switch (filterType) {
             case DEFAULT:

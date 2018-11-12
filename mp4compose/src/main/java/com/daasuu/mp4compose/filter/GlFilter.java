@@ -134,9 +134,13 @@ public class GlFilter {
         GLES20.glFinish();
     }
 
-    protected void onDraw() {
+    public void onDraw() {
     }
     protected void onDrawArraysAfter() {
+    }
+
+    public int getProgram() {
+        return program;
     }
 
     public void setUpSurface() {
@@ -184,7 +188,13 @@ public class GlFilter {
         handleMap.put(name, location);
         return location;
     }
+    public String getVertexShader() {
+        return vertexShaderSource;
+    }
 
+    public String getFragmentShader() {
+        return fragmentShaderSource;
+    }
     public void release() {
     }
 
@@ -193,5 +203,32 @@ public class GlFilter {
                               float blue,
                               float alpha) {
         this.clearColor = new float[]{red, green, blue, alpha};
+    }
+
+    protected void setFloat(final int location, final float floatValue) {
+        GLES20.glUniform1f(location, floatValue);
+//        runOnDraw(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//            }
+//        });
+    }
+    protected void setFloatVec2(final int location, final float[] arrayValue) {
+        GLES20.glUniform2fv(location, 1, FloatBuffer.wrap(arrayValue));
+
+//        runOnDraw(new Runnable() {
+//            @Override
+//            public void run() {
+//            }
+//        });
+    }
+
+    public final void destroy() {
+        GLES20.glDeleteProgram(program);
+        onDestroy();
+    }
+    protected void onDestroy() {
+
     }
 }
