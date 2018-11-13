@@ -62,17 +62,17 @@ public enum FilterType {
         filters.add(DEFAULT);
         filters.add(SEPIA);
         filters.add(MONOCHROME);
-        filters.add(TONE_CURVE_SAMPLE);
+//        filters.add(TONE_CURVE_SAMPLE);
         filters.add(LOOK_UP_TABLE_SAMPLE);
         filters.add(VIGNETTE);
         filters.add(INVERT);
         filters.add(HAZE);
         filters.add(BOX_BLUR);
-        filters.add(BILATERAL_BLUR);
+//        filters.add(BILATERAL_BLUR);
         filters.add(GRAY_SCALE);
-        filters.add(SPHERE_REFRACTION);
+//        filters.add(SPHERE_REFRACTION);
         filters.add(FILTER_GROUP_SAMPLE);
-        filters.add(GAUSSIAN_FILTER);
+//        filters.add(GAUSSIAN_FILTER);
         filters.add(BULGE_DISTORTION);
         filters.add(CGA_COLORSPACE);
         filters.add(SHARP);
@@ -81,7 +81,12 @@ public enum FilterType {
         return filters;
     }
 
-
+    /**
+     * 预览用的
+     * @param filterType
+     * @param context
+     * @return
+     */
     public static GlFilter createGlFilter(FilterType filterType, Context context) {
         switch (filterType) {
             case DEFAULT:
@@ -93,7 +98,9 @@ public enum FilterType {
             case INVERT:
                 return new GlInvertFilter();
             case HAZE:
-                return new GlHazeFilter();
+                GlHazeFilter hazeFilter = new GlHazeFilter();
+                hazeFilter.setDistance(0.4f);
+                return hazeFilter;
             case MONOCHROME:
                 GlMonochromeFilter glMonochromeFilter = new GlMonochromeFilter();
                 glMonochromeFilter.setIntensity(0.4f);
