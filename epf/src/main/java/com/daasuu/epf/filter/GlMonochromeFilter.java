@@ -53,7 +53,7 @@ public class GlMonochromeFilter extends GlFilter {
     @Override
     public void onDraw() {
         GLES20.glUniform1f(getHandle("intensity"), intensity);
-        GLES20.glUniform3fv(getHandle("filterColor"), 0, filterColor, 0);
+        GLES20.glUniform3fv(getHandle("filterColor"), 1, filterColor, 0);
     }
 
 }

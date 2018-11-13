@@ -29,7 +29,7 @@ import java.io.InputStream;
 import joe.chloe.R;
 import joe.chloe.exoplayerfilter.FilterType;
 
-public class FilterTypeConvertor {
+public class FilterTypeConverter {
 
 
     public static GlFilter convertToComposerFilter(Context context, FilterType filterType){

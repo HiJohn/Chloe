@@ -139,6 +139,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Intent intent = new Intent(this,GLPreviewActivity.class);
+        intent.setData(mVideoUri);
         intent.putExtra("path",videoPath);
         startActivity(intent);
 

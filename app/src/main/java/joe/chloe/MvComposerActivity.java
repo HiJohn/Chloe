@@ -25,6 +25,7 @@ import com.blankj.utilcode.util.ToastUtils;
 import com.daasuu.mp4compose.FillMode;
 import com.daasuu.mp4compose.composer.Mp4Composer;
 import com.daasuu.mp4compose.filter.GlLutFilter;
+import com.daasuu.mp4compose.filter.GlMonochromeFilter;
 import com.daasuu.mp4compose.filter.GlSepiaFilter;
 
 import java.io.File;
@@ -120,11 +121,14 @@ public class MvComposerActivity extends AppCompatActivity {
 
         mp4Composer = null;
 
+        GlMonochromeFilter glMonochromeFilter = new GlMonochromeFilter();
+        glMonochromeFilter.setIntensity(0.7f);
+
         mp4Composer = new Mp4Composer(videoItem.getPath(), videoPath)
                 // .rotation(Rotation.ROTATION_270)
                 //.size(720, 1280)
                 .fillMode(FillMode.PRESERVE_ASPECT_FIT)
-                .filter(new GlSepiaFilter())
+                .filter(glMonochromeFilter)
                 .mute(muteCheckBox.isChecked())
                 .flipHorizontal(flipHorizontalCheckBox.isChecked())
                 .flipVertical(flipVerticalCheckBox.isChecked())

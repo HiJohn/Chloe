@@ -86,7 +86,7 @@ public class GlCoolFilter extends GlFilter {
     }
 
     @Override
-    protected void onDraw() {
+    public void onDraw() {
         super.onDraw();
         if (this.mToneCurveTexture[0] != -1){
             GLES20.glActiveTexture(GLES20.GL_TEXTURE3);

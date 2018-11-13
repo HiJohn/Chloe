@@ -18,14 +18,6 @@ import java.util.HashMap;
 
 public class GlFilter {
 
-//    protected static final String DEFAULT_VERTEX_SHADER =
-//            "attribute vec4 aPosition;\n" +
-//                    "attribute vec4 aTextureCoord;\n" +
-//                    "varying highp vec2 vTextureCoord;\n" +
-//                    "void main() {\n" +
-//                    "gl_Position = aPosition;\n" +
-//                    "vTextureCoord = aTextureCoord.xy;\n" +
-//                    "}\n";
 
     protected static final String DEFAULT_VERTEX_SHADER =
             "uniform mat4 uMVPMatrix;\n" +
@@ -207,24 +199,15 @@ public class GlFilter {
 
     protected void setFloat(final int location, final float floatValue) {
         GLES20.glUniform1f(location, floatValue);
-//        runOnDraw(new Runnable() {
-//            @Override
-//            public void run() {
-//
-//            }
-//        });
+
     }
     protected void setFloatVec2(final int location, final float[] arrayValue) {
         GLES20.glUniform2fv(location, 1, FloatBuffer.wrap(arrayValue));
 
-//        runOnDraw(new Runnable() {
-//            @Override
-//            public void run() {
-//            }
-//        });
+
     }
 
-    public final void destroy() {
+    public  void destroy() {
         GLES20.glDeleteProgram(program);
         onDestroy();
     }

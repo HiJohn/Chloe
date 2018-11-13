@@ -61,22 +61,22 @@ public enum FilterType {
 
         filters.add(DEFAULT);
         filters.add(SEPIA);
-//        filters.add(MONOCHROME);
+        filters.add(MONOCHROME);
         filters.add(TONE_CURVE_SAMPLE);
         filters.add(LOOK_UP_TABLE_SAMPLE);
-//        filters.add(VIGNETTE);
+        filters.add(VIGNETTE);
         filters.add(INVERT);
         filters.add(HAZE);
         filters.add(BOX_BLUR);
         filters.add(BILATERAL_BLUR);
         filters.add(GRAY_SCALE);
         filters.add(SPHERE_REFRACTION);
-//        filters.add(FILTER_GROUP_SAMPLE);
+        filters.add(FILTER_GROUP_SAMPLE);
         filters.add(GAUSSIAN_FILTER);
         filters.add(BULGE_DISTORTION);
         filters.add(CGA_COLORSPACE);
         filters.add(SHARP);
-        filters.add(BITMAP_OVERLAY_SAMPLE);
+//        filters.add(BITMAP_OVERLAY_SAMPLE);
 
         return filters;
     }
@@ -95,7 +95,9 @@ public enum FilterType {
             case HAZE:
                 return new GlHazeFilter();
             case MONOCHROME:
-                return new GlMonochromeFilter();
+                GlMonochromeFilter glMonochromeFilter = new GlMonochromeFilter();
+                glMonochromeFilter.setIntensity(0.4f);
+                return glMonochromeFilter;
             case BILATERAL_BLUR:
                 return new GlBilateralFilter();
             case BOX_BLUR:
