@@ -62,7 +62,7 @@ public enum FilterType {
         filters.add(DEFAULT);
         filters.add(SEPIA);
         filters.add(MONOCHROME);
-//        filters.add(TONE_CURVE_SAMPLE);
+        filters.add(TONE_CURVE_SAMPLE);
         filters.add(LOOK_UP_TABLE_SAMPLE);
         filters.add(VIGNETTE);
         filters.add(INVERT);
@@ -114,8 +114,18 @@ public enum FilterType {
 
                 return new GlLookUpTableFilter(bitmap);
             case TONE_CURVE_SAMPLE:
+//                String filePath = "acv/filter_co_blue.acv";
+//                String filePath = "acv/filter_bloom_summer.acv";
+//                String filePath = "acv/filter_sun_light.acv";
+//                String filePath = "acv/filter_pure_white.acv";
+//                String filePath = "acv/filter_pure.acv";
+                String filePath = "acv/filter_fresh.acv";
+//                String filePath = "acv/filter_late_autumn.acv";
+//                String filePath = "acv/filter_pre_autumn.acv";
+//                String filePath = "acv/filter_violet.acv";
+
                 try {
-                    InputStream is = context.getAssets().open("acv/tone_cuver_sample.acv");
+                    InputStream is = context.getAssets().open(filePath);
                     return new GlToneCurveFilter(is);
                 } catch (IOException e) {
                     Log.e("FilterType", "Error");

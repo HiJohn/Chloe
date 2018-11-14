@@ -51,12 +51,23 @@ public class FilterTypeConverter {
             case BOX_BLUR:
                 return new GlBoxBlurFilter();
             case LOOK_UP_TABLE_SAMPLE:
-                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.lookup_sample);
+                Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), R.drawable.foggy_night);
 
                 return new GlLutFilter(bitmap);
             case TONE_CURVE_SAMPLE:
                 try {
-                    InputStream is = context.getAssets().open("acv/tone_cuver_sample.acv");
+//                String filePath = "acv/filter_co_blue.acv";
+//                String filePath = "acv/filter_bloom_summer.acv";
+//                String filePath = "acv/filter_sun_light.acv";
+//                String filePath = "acv/filter_pure_white.acv";
+//                    String filePath = "acv/filter_pure.acv";
+                String filePath = "acv/filter_fresh.acv";
+//                String filePath = "acv/filter_late_autumn.acv";
+//                String filePath = "acv/filter_pre_autumn.acv";
+//                String filePath = "acv/filter_violet.acv";
+
+
+                    InputStream is = context.getAssets().open(filePath);
                     return new GlToneCurveFilter(is);
                 } catch (IOException e) {
                     LogUtils.e("FilterType", "Error");
