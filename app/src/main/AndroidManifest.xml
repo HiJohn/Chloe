@@ -19,8 +19,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:name=".ChloeApp"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".MainActivity">
+
+        </activity>
         <activity android:name=".gpuimgplustest.FilterTestActivity" />
         <activity android:name=".gpuimgplustest.GpuImageTestActivity">
             <intent-filter>

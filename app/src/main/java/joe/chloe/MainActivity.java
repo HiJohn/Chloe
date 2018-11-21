@@ -20,6 +20,8 @@ import com.blankj.utilcode.util.ToastUtils;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
@@ -49,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
     private String audioPath = "";
     private String videoPath = "";
+    private Uri mAudioUri = null;
     private Uri mVideoUri = null;
     private VideoInfo videoInfo = null;
 
@@ -57,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private MediaController mController;
 
 
-
+    ExecutorService executorService = Executors.newFixedThreadPool(3);
 
     private Handler mHandler = new Handler(new Handler.Callback() {
         @Override
@@ -95,11 +98,11 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void chooseAudioFile(View view) {
-//        Intent intent = new Intent();
-//        intent.setType("audio/*");
-//        intent.setAction(Intent.ACTION_GET_CONTENT);
-//        intent.addCategory(Intent.CATEGORY_OPENABLE);
-//        startActivityForResult(intent, CHOOSE_AUDIO);
+        Intent intent = new Intent();
+        intent.setType("audio/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        startActivityForResult(intent, CHOOSE_AUDIO);
     }
 
     public void chooseVideoFile(View view) {
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case CHOOSE_AUDIO:
                 audioPath = UriUtil.getPath(this, data.getData());
-
+                mAudioUri = data.getData();
                 break;
         }
     }

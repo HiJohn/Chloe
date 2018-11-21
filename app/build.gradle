@@ -35,7 +35,7 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 
 
-    implementation "com.blankj:utilcode:1.21.0"
+    implementation "com.blankj:utilcode:1.22.0"
 
 
     implementation 'commons-io:commons-io:2.4'
