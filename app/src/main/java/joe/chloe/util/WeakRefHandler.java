@@ -19,7 +19,10 @@ public abstract class WeakRefHandler<T extends Activity> extends Handler {
     @Override
     public void handleMessage(Message msg) {
         super.handleMessage(msg);
-        handleMessage(msg, weakReferenceActivity.get());
+        T t = weakReferenceActivity.get();
+        if (t!=null){
+            handleMessage(msg, t);
+        }
     }
 
 
