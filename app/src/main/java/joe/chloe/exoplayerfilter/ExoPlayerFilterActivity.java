@@ -1,9 +1,15 @@
 package joe.chloe.exoplayerfilter;
 
 import android.app.ProgressDialog;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.HandlerThread;
+import android.os.Message;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,16 +26,21 @@ import com.daasuu.epf.EPlayerView;
 import com.daasuu.mp4compose.FillMode;
 import com.daasuu.mp4compose.composer.Mp4Composer;
 import com.daasuu.mp4compose.filter.GlFilter;
+import com.google.android.exoplayer2.ExoPlaybackException;
 import com.google.android.exoplayer2.ExoPlayerFactory;
+import com.google.android.exoplayer2.PlaybackParameters;
 import com.google.android.exoplayer2.Player;
 import com.google.android.exoplayer2.SimpleExoPlayer;
+import com.google.android.exoplayer2.Timeline;
 import com.google.android.exoplayer2.extractor.DefaultExtractorsFactory;
 import com.google.android.exoplayer2.extractor.ExtractorsFactory;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
+import com.google.android.exoplayer2.source.TrackGroupArray;
 import com.google.android.exoplayer2.trackselection.AdaptiveTrackSelection;
 import com.google.android.exoplayer2.trackselection.DefaultTrackSelector;
 import com.google.android.exoplayer2.trackselection.TrackSelection;
+import com.google.android.exoplayer2.trackselection.TrackSelectionArray;
 import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.upstream.BandwidthMeter;
 import com.google.android.exoplayer2.upstream.DataSource;
@@ -52,6 +63,9 @@ public class ExoPlayerFilterActivity extends AppCompatActivity implements VideoF
     private Button button;
     private Button merge;
     private SeekBar seekBar;
+
+    private PlayerViewModel playerViewModel;
+
     private PlayerTimer playerTimer;
     private RecyclerView filtersRv;
     private LinearLayoutManager filterLlm;
@@ -80,7 +94,28 @@ public class ExoPlayerFilterActivity extends AppCompatActivity implements VideoF
         }
         outPath = PathUtils.getExternalMoviesPath().concat("/").concat(String.valueOf(System.currentTimeMillis())).concat("_testFilter.mp4");
 
+
+        playerViewModel = ViewModelProviders.of(this).get(PlayerViewModel.class);
+
+        subscriberSeekbar();
     }
+
+
+    private void subscriberSeekbar(){
+
+        playerViewModel.getSeekBarValue().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer integer) {
+                if (integer==null){
+                    return;
+                }
+                LogUtils.i(TAG,"  on changed "+integer);
+                seekBar.setProgress(integer);
+            }
+        });
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -172,27 +207,65 @@ public class ExoPlayerFilterActivity extends AppCompatActivity implements VideoF
 
     private void setUpSimpleExoPlayer() {
 
-        BandwidthMeter bandwidthMeter = new DefaultBandwidthMeter();
-        TrackSelection.Factory videoTrackSelectionFactory = new AdaptiveTrackSelection.Factory(bandwidthMeter);
-        TrackSelector trackSelector = new DefaultTrackSelector(videoTrackSelectionFactory);
-
-        // Measures bandwidth during playback. Can be null if not required.
-        DefaultBandwidthMeter defaultBandwidthMeter = new DefaultBandwidthMeter();
-        // Produces DataSource instances through which media data is loaded.
-        // Produces DataSource instances through which media data is loaded.
-        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this, Util.getUserAgent(this, "chloe"), defaultBandwidthMeter);
-        // Produces Extractor instances for parsing the media data.
-//        ExtractorsFactory extractorsFactory = new DefaultExtractorsFactory();
-        // This is the MediaSource representing the media to be played.
-//        MediaSource videoSource = new ExtractorMediaSource(Uri.parse(Constant.STREAM_URL_MP4_VOD_LONG), dataSourceFactory, extractorsFactory, null, null);
-//        MediaSource videoSource = new ExtractorMediaSource(mVideoUri, dataSourceFactory, extractorsFactory, null, null);
+        DataSource.Factory dataSourceFactory = new DefaultDataSourceFactory(this,
+                Util.getUserAgent(this, "chloe"), new DefaultBandwidthMeter());
         MediaSource videoSource =new  ExtractorMediaSource.Factory(dataSourceFactory).createMediaSource(mVideoUri);
-        // SimpleExoPlayer
-        player = ExoPlayerFactory.newSimpleInstance(this, trackSelector);
-        // Prepare the player with the source.
+
+        player = ExoPlayerFactory.newSimpleInstance(this, new DefaultTrackSelector());
         player.prepare(videoSource);
         player.setPlayWhenReady(true);
         player.setRepeatMode(Player.REPEAT_MODE_ONE);
+        player.addListener(new Player.EventListener() {
+            @Override
+            public void onTimelineChanged(Timeline timeline, Object manifest, int reason) {
+
+            }
+
+            @Override
+            public void onTracksChanged(TrackGroupArray trackGroups, TrackSelectionArray trackSelections) {
+
+            }
+
+            @Override
+            public void onLoadingChanged(boolean isLoading) {
+
+            }
+
+            @Override
+            public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                LogUtils.i(TAG," jon ,playWhenReady: "+playWhenReady+",playbackState: "+playbackState);
+            }
+
+            @Override
+            public void onRepeatModeChanged(int repeatMode) {
+
+            }
+
+            @Override
+            public void onShuffleModeEnabledChanged(boolean shuffleModeEnabled) {
+
+            }
+
+            @Override
+            public void onPlayerError(ExoPlaybackException error) {
+
+            }
+
+            @Override
+            public void onPositionDiscontinuity(int reason) {
+
+            }
+
+            @Override
+            public void onPlaybackParametersChanged(PlaybackParameters playbackParameters) {
+
+            }
+
+            @Override
+            public void onSeekProcessed() {
+
+            }
+        });
     }
 
 
@@ -218,7 +291,9 @@ public class ExoPlayerFilterActivity extends AppCompatActivity implements VideoF
                 if (duration <= 0) return;
 
                 seekBar.setMax((int) duration / 1000);
-                seekBar.setProgress((int) position / 1000);
+                playerViewModel.setSeekBarValue((int) position / 1000);
+//                seekBar.setProgress((int) position / 1000);
+
             }
         });
         playerTimer.start();
