@@ -64,6 +64,9 @@ dependencies {
     implementation project(':mp4compose')
     implementation project(':epf')
     implementation  'com.google.android.exoplayer:exoplayer-core:2.9.0'
+    implementation project(path: ':FFmpegAndroid')
+
+    implementation 'com.googlecode.mp4parser:isoparser:1.1.21'
 
 
 }

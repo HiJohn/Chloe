@@ -5,10 +5,16 @@ import android.support.multidex.MultiDexApplication;
 
 public class ChloeApp extends MultiDexApplication {
 
+    private static ChloeApp mApp;
+
     @Override
     public void onCreate() {
         super.onCreate();
+        mApp = this;
+    }
 
+    public static ChloeApp getApp() {
+        return mApp;
     }
 
     @Override
